@@ -17,6 +17,37 @@ public class JpaMain {
 
         tx.begin();
 
+
+//                  객체를 테이블 중심으로 모델링
+//        try{
+//
+//            Team team = new Team();
+//            team.setName("아연이네");
+//            em.persist(team);
+//
+//            Member member = new Member();
+//            member.setUsername("아연");
+//            member.setTeamId(team.getId());
+//            em.persist(member);
+//
+//            Member member1 = em.find(Member.class, member.getId());
+//            Long teamId = member1.getTeamId();
+//            Team team1 = em.find(Team.class, teamId);
+//
+//            System.out.println("team1 = " + team1);
+//
+//
+//            System.out.println("member = " + member.getTeamId());
+//
+//
+//            tx.commit();
+//        }catch(Exception e ){
+//            tx.rollback();
+//        }finally{
+//            em.close();
+//        }emf.close();
+//
+
         try{
 
             Team team = new Team();
@@ -25,18 +56,20 @@ public class JpaMain {
 
             Member member = new Member();
             member.setUsername("아연");
-            member.setTeamId(team.getId());
+            member.setTeam(team);
             em.persist(member);
 
+            em.flush();
+            em.clear();
+
             Member member1 = em.find(Member.class, member.getId());
-            Long teamId = member1.getTeamId();
-            Team team1 = em.find(Team.class, teamId);
+            Team team1 = member1.getTeam();
+//            Team team2 = em.find(Team.class, team1);
+            System.out.println("member.teamId = " + team1.getId());
 
-            System.out.println("team1 = " + team1);
-
-
-            System.out.println("member = " + member.getTeamId());
-
+            // 수정
+//            Team newTeam = em.find(Team.class, 100L);
+//            member1.setTeam(newTeam);
 
             tx.commit();
         }catch(Exception e ){
@@ -45,5 +78,5 @@ public class JpaMain {
             em.close();
         }emf.close();
 
-    }
+        }
     }
